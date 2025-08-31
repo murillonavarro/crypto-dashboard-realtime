@@ -38,6 +38,8 @@ msbuild.wrn
 project.lock.json
 project.fragment.lock.json
 artifacts/
+.vs/
+
 
 # React / Node
 node_modules/

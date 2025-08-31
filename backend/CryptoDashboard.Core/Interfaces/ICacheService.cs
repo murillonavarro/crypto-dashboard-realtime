@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 namespace CryptoDashboard.Core.Interfaces
 {
     public interface ICacheService

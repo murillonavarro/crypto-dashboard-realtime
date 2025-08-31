@@ -1,6 +1,10 @@
 using CryptoDashboard.Core.Interfaces;
 using CryptoDashboard.Core.Models;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CryptoDashboard.Infrastructure.Services
 {
@@ -17,9 +21,8 @@ namespace CryptoDashboard.Infrastructure.Services
 
         public async Task<List<CryptoData>> GetTopCryptocurrencies()
         {
-            // Por enquanto retorna dados mock
             var random = new Random();
-            return new List<CryptoData>
+            return await Task.FromResult(new List<CryptoData>
             {
                 new() {
                     Id = "bitcoin",
@@ -44,8 +47,20 @@ namespace CryptoDashboard.Infrastructure.Services
                     Volume24h = 15000000000m,
                     LastUpdated = DateTime.UtcNow,
                     SparklineData = Enumerable.Range(0, 24).Select(_ => 3000m + (decimal)(random.NextDouble() * 200)).ToList()
+                },
+                new() {
+                    Id = "cardano",
+                    Symbol = "ADA",
+                    Name = "Cardano",
+                    CurrentPrice = 0.5m + (decimal)(random.NextDouble() * 0.1),
+                    PriceChange24h = (decimal)(random.NextDouble() * 0.05 - 0.025),
+                    PriceChangePercentage24h = (decimal)(random.NextDouble() * 10 - 5),
+                    MarketCap = 16000000000m,
+                    Volume24h = 1200000000m,
+                    LastUpdated = DateTime.UtcNow,
+                    SparklineData = Enumerable.Range(0, 24).Select(_ => 0.5m + (decimal)(random.NextDouble() * 0.1)).ToList()
                 }
-            };
+            });
         }
 
         public async Task<CryptoData?> GetCryptoData(string symbol)
@@ -58,7 +73,7 @@ namespace CryptoDashboard.Infrastructure.Services
         {
             var history = new List<PricePoint>();
             var random = new Random();
-            var basePrice = 50000m;
+            var basePrice = symbol.ToUpper() == "BTC" ? 50000m : 3000m;
             
             for (int i = days; i >= 0; i--)
             {
