@@ -29,22 +29,6 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     }
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy", policy =>
-    {
-        policy.WithOrigins(
-            "http://localhost:3000",
-            "http://localhost:3001",
-            "https://crypto-dashboard-frontend.vercel.app",
-            "https://*.vercel.app"
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials();
-    });
-});
-
 // Cache Service
 builder.Services.AddSingleton<ICacheService>(sp =>
 {
@@ -70,7 +54,24 @@ if (!builder.Environment.IsDevelopment())
     builder.WebHost.UseUrls("http://+:10000");
 }
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:3000",
+            "https://crypto-dashboard-realtime.vercel.app",
+            "https://crypto-dashboard-frontend.vercel.app"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("CorsPolicy");
 
 if (app.Environment.IsDevelopment())
 {
@@ -79,7 +80,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();
 app.MapHub<CryptoHub>("/hubs/crypto");
