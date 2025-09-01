@@ -60,6 +60,11 @@ builder.Services.AddSingleton<ICacheService>(sp =>
 builder.Services.AddScoped<ICryptoService, CryptoService>();
 builder.Services.AddHostedService<CryptoPriceUpdateService>();
 
+if (!builder.Environment.IsDevelopment())
+{
+    builder.WebHost.UseUrls("http://+:10000");
+}
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
