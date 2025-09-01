@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CryptoData, PricePoint } from '../types/crypto';
 
-const API_URL = 'http://localhost:5178/api';
+const API_URL = 'https://crypto-dashboard-api-m6lg.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,

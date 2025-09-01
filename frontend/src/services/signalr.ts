@@ -15,7 +15,7 @@ class SignalRService {
     }
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5178/hubs/crypto', {
+      .withUrl('https://crypto-dashboard-api-m6lg.onrender.com/hubs/crypto', {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })
